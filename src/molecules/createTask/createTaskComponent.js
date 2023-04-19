@@ -7,10 +7,12 @@ import "./createTaskComponent.css";
 
 const CreateTaskComponent = ({updateTodoList}) => {
     const [newTask, setNewTask] = useState("");
-
+    const list = JSON.parse(localStorage.getItem("list"));
     const addNewTask = () => {
         console.log("Add New Task");
         updateTodoList(newTask)
+        list.push(newTask);
+        localStorage.setItem("list", JSON.stringify(list));
     }
 
     const updateNewTask = (task) => {

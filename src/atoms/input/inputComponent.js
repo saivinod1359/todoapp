@@ -14,8 +14,13 @@ const InputComponent = ({updateNewTask}) => {
             updateNewTask(event.target.value);
     }
 
+    const blurEventHandler = (event) => {
+        event.target.value = ""
+    }
+
     return <Input
         onKeyUp={changeEventHandler}
+        onBlur={blurEventHandler}
         type="text"
         name="input"
     />

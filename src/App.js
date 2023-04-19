@@ -9,36 +9,52 @@ import './App.css'; //file
 // import CreateSubTaskComponent from './molecules/createSubTask/createSubTaskComponent';
 
 function App() {
+  const [errorMessage, setErrorMessage] = useState({
+    error_1: "This is Error Message 1",
+    error_2: "This is Error Message 2",
+  });
 
-  var [todoList, setTodoList] = useState([
+  localStorage.setItem("list", JSON.stringify([
     "Todo List Task 1",
     "Todo List Task 2",
     "Todo List Task 3",
     "Todo List Task 4",
-  ]);
+  ]));
+
+
+  var [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem("list")));
+
 
   const deleteTask = (event, index) => {
-    console.log('event: ', event)
     let todoListItems = todoList;
     todoListItems.splice(index, 1);
     setTodoList([...todoListItems]);
   }
 
   const updateTodoList = (list) => {
-    let todoListItems = todoList;
+    let todoListItems = JSON.parse(localStorage.getItem("list"));
+    console.log('todoListItems: ',todoListItems)
     todoListItems.push(list)
+    // console.log(JSON.parse((localStorage.getItem("list"));
     setTodoList([...todoListItems]);
   }
 
   return (
     <div className="container">
+      {
+        errorMessage
+          && errorMessage.error_1
+          && <p className="error"> { errorMessage.error_1 } </p>
+      }
       <HeadingComponent msg="Todo Application" />
       <CreateTaskComponent updateTodoList={updateTodoList} />
       {
         (todoList && todoList.length === 0)
           ? <p className='error'>Your Todo List is Empty</p>
           : todoList && todoList.map((list, index) => {
-            return <ListMolecule info={list} key={index} deleteTask={deleteTask}/>
+            return <div key={index}>
+              <ListMolecule info={list} deleteTask={deleteTask} />
+            </div>
           })
       }
 
